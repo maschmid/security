@@ -8,7 +8,6 @@ import javax.enterprise.inject.spi.Extension;
 import org.jboss.seam.security.external.ResponseHandler;
 import org.jboss.seam.security.external.dialogues.DialogueContextExtension;
 import org.jboss.seam.security.external.virtualapplications.VirtualApplicationContextExtension;
-import org.jboss.seam.security.externaltest.integration.MetaDataLoader;
 import org.jboss.seam.security.externaltest.integration.openid.op.OpCustomizer;
 import org.jboss.seam.security.externaltest.integration.openid.rp.RpCustomizer;
 import org.jboss.seam.security.externaltest.integration.saml.idp.IdpCustomizer;
@@ -53,7 +52,6 @@ class ArchiveBuilder {
         war.addAsWebInfResource("WEB-INF/" + entity + "-beans.xml", "beans.xml");
         war.addAsWebInfResource("WEB-INF/context.xml", "context.xml");
 
-        war.addPackage(MetaDataLoader.class.getPackage());
         if (entity.equals("sp")) {
             war.addPackage(SpCustomizer.class.getPackage());
             war.addAsWebInfResource("test_keystore.jks");

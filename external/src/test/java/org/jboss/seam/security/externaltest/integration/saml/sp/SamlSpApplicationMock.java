@@ -2,6 +2,7 @@ package org.jboss.seam.security.externaltest.integration.saml.sp;
 
 import java.io.IOException;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -12,9 +13,8 @@ import org.jboss.seam.security.external.api.ResponseHolder;
 import org.jboss.seam.security.external.dialogues.api.Dialogued;
 import org.jboss.seam.security.external.saml.api.SamlSpSession;
 import org.jboss.seam.security.external.spi.SamlServiceProviderSpi;
-import org.jboss.seam.security.external.virtualapplications.api.VirtualApplicationScoped;
 
-@VirtualApplicationScoped
+@ApplicationScoped
 public class SamlSpApplicationMock implements SamlServiceProviderSpi {
     @Inject
     private Instance<SamlMultiUserServiceProviderApi> spApi;

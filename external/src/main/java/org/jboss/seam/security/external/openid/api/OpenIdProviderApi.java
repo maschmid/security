@@ -7,8 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.seam.security.external.api.ResponseHolder;
 import org.jboss.seam.security.external.dialogues.api.Dialogued;
-import org.jboss.seam.security.external.openid.OpenIdProviderInApplicationScopeProducer;
-import org.jboss.seam.security.external.openid.OpenIdProviderInVirtualApplicationScopeProducer;
 import org.jboss.seam.security.external.spi.OpenIdProviderSpi;
 import org.jboss.seam.security.external.virtualapplications.api.VirtualApplicationScoped;
 

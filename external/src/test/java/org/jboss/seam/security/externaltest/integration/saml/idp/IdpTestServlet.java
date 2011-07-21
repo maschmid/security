@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jboss.seam.security.externaltest.integration.MetaDataLoader;
-
 @WebServlet(name = "IdpTestServlet", urlPatterns = {"/testservlet"})
 public class IdpTestServlet extends HttpServlet {
     private static final long serialVersionUID = -4551548646707243449L;
@@ -20,7 +18,7 @@ public class IdpTestServlet extends HttpServlet {
     private SamlIdpApplicationMock samlIdpApplicationMock;
 
     @Inject
-    private MetaDataLoader metaDataLoader;
+    private IdpMetaDataLoader metaDataLoader;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -43,7 +41,7 @@ public class IdpTestServlet extends HttpServlet {
             response.getWriter().print(count);
         } else if (command.equals("loadMetaData")) {
             metaDataLoader.loadMetaDataOfOtherSamlEntity("www.sp1.com", "sp");
-            metaDataLoader.loadMetaDataOfOtherSamlEntity("www.sp2.com", "sp");
+            // metaDataLoader.loadMetaDataOfOtherSamlEntity("www.sp2.com", "sp");
         } else {
             throw new RuntimeException("Invalid command: " + command);
         }

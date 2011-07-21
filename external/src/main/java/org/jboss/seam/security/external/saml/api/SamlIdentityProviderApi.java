@@ -6,8 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.seam.security.external.dialogues.api.Dialogued;
 import org.jboss.seam.security.external.jaxb.samlv2.assertion.AttributeType;
-import org.jboss.seam.security.external.saml.idp.SamlIdpInApplicationScopeProducer;
-import org.jboss.seam.security.external.saml.idp.SamlIdpInVirtualApplicationScopeProducer;
 import org.jboss.seam.security.external.spi.SamlIdentityProviderSpi;
 import org.jboss.seam.security.external.virtualapplications.api.VirtualApplicationScoped;
 

@@ -4,8 +4,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.seam.security.external.SamlSingleUserServiceProviderSpi;
 import org.jboss.seam.security.external.dialogues.api.Dialogued;
-import org.jboss.seam.security.external.saml.sp.SamlSpInApplicationScopeProducer;
-import org.jboss.seam.security.external.saml.sp.SamlSpInVirtualApplicationScopeProducer;
 import org.jboss.seam.security.external.spi.SamlServiceProviderSpi;
 import org.jboss.seam.security.external.virtualapplications.api.VirtualApplicationScoped;
 

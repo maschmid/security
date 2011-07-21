@@ -1,4 +1,4 @@
-package org.jboss.seam.security.externaltest.integration;
+package org.jboss.seam.security.externaltest.integration.saml.sp;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,12 +10,12 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-import org.jboss.seam.security.external.saml.SamlEntityBean;
+import org.jboss.seam.security.external.saml.sp.SamlSpBean;
 
 @ApplicationScoped
-public class MetaDataLoader {
+public class SpMetaDataLoader {
     @Inject
-    private Instance<SamlEntityBean> samlEntityBean;
+    private Instance<SamlSpBean> samlSpBean;
 
     public void loadMetaDataOfOtherSamlEntity(String hostName, String idpOrSp) {
         URLConnection uc;
@@ -24,7 +24,9 @@ public class MetaDataLoader {
             uc = url.openConnection();
             uc.setRequestProperty("host", hostName);
             Reader reader = new InputStreamReader(uc.getInputStream());
-            samlEntityBean.get().addExternalSamlEntity(reader);
+            
+            samlSpBean.get().addExternalSamlEntity(reader);
+            
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

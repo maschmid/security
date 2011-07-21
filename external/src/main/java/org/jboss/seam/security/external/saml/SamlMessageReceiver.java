@@ -40,8 +40,7 @@ import org.xml.sax.SAXException;
  * @author Marcel Kolsteren
  */
 @ApplicationScoped
-@SuppressWarnings("restriction")
-public class SamlMessageReceiver {
+public abstract class SamlMessageReceiver {
     @Inject
     private Logger log;
 
@@ -62,9 +61,8 @@ public class SamlMessageReceiver {
 
     @Inject
     private SamlIdpSingleSignOnService samlIdpSingleSignOnService;
-
-    @Inject
-    private Instance<SamlEntityBean> samlEntityBean;
+    
+    protected abstract SamlEntityBean getSamlEntityBean();
 
     @Inject
     private Instance<SamlSpBean> samlSpBean;
@@ -127,13 +125,13 @@ public class SamlMessageReceiver {
                 // Request or unsolicited response
 
                 String destination = samlRequestOrResponse.isRequest() ? samlRequestMessage.getDestination() : samlResponseMessage.getDestination();
-                if (!samlEntityBean.get().getServiceURL(service).equals(destination)) {
+                if (!getSamlEntityBean().getServiceURL(service).equals(destination)) {
                     throw new InvalidRequestException("Destination (" + destination + ") is not valid.");
                 }
 
                 dialogueManager.beginDialogue();
                 samlDialogue.get().setExternalProviderMessageId(samlRequestOrResponse.isRequest() ? samlRequestMessage.getID() : samlResponseMessage.getID());
-                SamlExternalEntity externalProvider = samlEntityBean.get().getExternalSamlEntityByEntityId(issuerEntityId);
+                SamlExternalEntity externalProvider = getSamlEntityBean().getExternalSamlEntityByEntityId(issuerEntityId);
                 if (externalProvider == null) {
                     throw new InvalidRequestException("Received message from unknown entity id " + issuerEntityId);
                 }
@@ -150,7 +148,7 @@ public class SamlMessageReceiver {
                 }
             }
 
-            SamlExternalEntity externalProvider = samlEntityBean.get().getExternalSamlEntityByEntityId(issuerEntityId);
+            SamlExternalEntity externalProvider = getSamlEntityBean().getExternalSamlEntityByEntityId(issuerEntityId);
 
             boolean validate;
             if (samlRequestOrResponse.isRequest()) {

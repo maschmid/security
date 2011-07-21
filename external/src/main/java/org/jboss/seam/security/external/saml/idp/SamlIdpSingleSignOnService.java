@@ -16,8 +16,6 @@ import org.jboss.seam.security.external.saml.SamlConstants;
 import org.jboss.seam.security.external.saml.SamlDialogue;
 import org.jboss.seam.security.external.saml.SamlEntityBean;
 import org.jboss.seam.security.external.saml.SamlExternalEntity;
-import org.jboss.seam.security.external.saml.SamlMessageFactory;
-import org.jboss.seam.security.external.saml.SamlMessageSender;
 import org.jboss.seam.security.external.saml.SamlProfile;
 import org.jboss.seam.security.external.saml.SamlService;
 import org.jboss.seam.security.external.saml.api.SamlIdpSession;
@@ -29,10 +27,10 @@ import org.jboss.seam.security.external.spi.SamlIdentityProviderSpi;
  */
 public class SamlIdpSingleSignOnService {
     @Inject
-    private SamlMessageFactory samlMessageFactory;
+    private SamlIdpMessageFactory samlMessageFactory;
 
     @Inject
-    private SamlMessageSender samlMessageSender;
+    private SamlIdpMessageSender samlMessageSender;
 
     @Inject
     private Instance<SamlIdentityProviderSpi> samlIdentityProviderSpi;

@@ -18,8 +18,6 @@ import org.jboss.seam.security.external.jaxb.samlv2.protocol.StatusResponseType;
 import org.jboss.seam.security.external.jaxb.samlv2.protocol.StatusType;
 import org.jboss.seam.security.external.saml.SamlConstants;
 import org.jboss.seam.security.external.saml.SamlDialogue;
-import org.jboss.seam.security.external.saml.SamlMessageFactory;
-import org.jboss.seam.security.external.saml.SamlMessageSender;
 import org.jboss.seam.security.external.saml.SamlProfile;
 import org.jboss.seam.security.external.saml.api.SamlNameId;
 import org.jboss.seam.security.external.spi.SamlServiceProviderSpi;
@@ -29,10 +27,10 @@ import org.jboss.seam.security.external.spi.SamlServiceProviderSpi;
  */
 public class SamlSpSingleLogoutService {
     @Inject
-    private SamlMessageFactory samlMessageFactory;
+    private SamlSpMessageFactory samlMessageFactory;
 
     @Inject
-    private SamlMessageSender samlMessageSender;
+    private SamlSpMessageSender samlMessageSender;
 
     @Inject
     private SamlSpSessions samlSpSessions;

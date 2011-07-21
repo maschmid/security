@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jboss.seam.security.externaltest.integration.MetaDataLoader;
-
 @WebServlet(name = "SpTestServlet", urlPatterns = {"/testservlet"})
 public class SpTestServlet extends HttpServlet {
     private static final long serialVersionUID = -4551548646707243449L;
@@ -20,7 +18,7 @@ public class SpTestServlet extends HttpServlet {
     private SamlSpApplicationMock samlSpApplicationMock;
 
     @Inject
-    private MetaDataLoader metaDataLoader;
+    private SpMetaDataLoader metaDataLoader;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

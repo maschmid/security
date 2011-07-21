@@ -40,13 +40,11 @@ import org.w3c.dom.Node;
  * @author Marcel Kolsteren
  */
 @ApplicationScoped
-@SuppressWarnings("restriction")
-public class SamlMessageSender {
+public abstract class SamlMessageSender {
     @Inject
     private Logger log;
 
-    @Inject
-    private Instance<SamlEntityBean> samlEntityBean;
+    protected abstract SamlEntityBean getSamlEntityBean();
 
     @Inject
     private SamlSignatureUtilForPostBinding signatureUtilForPostBinding;
@@ -139,10 +137,10 @@ public class SamlMessageSender {
     }
 
     public SamlEndpoint getEndpoint(SamlService service) {
-        SamlEndpoint endpoint = service.getEndpointForBinding(samlEntityBean.get().getPreferredBinding());
+        SamlEndpoint endpoint = service.getEndpointForBinding(getSamlEntityBean().getPreferredBinding());
         if (endpoint == null) {
             // Preferred binding not available. Use the other binding.
-            endpoint = service.getEndpointForBinding(samlEntityBean.get().getPreferredBinding() == SamlBinding.HTTP_Post ? SamlBinding.HTTP_Redirect : SamlBinding.HTTP_Post);
+            endpoint = service.getEndpointForBinding(getSamlEntityBean().getPreferredBinding() == SamlBinding.HTTP_Post ? SamlBinding.HTTP_Redirect : SamlBinding.HTTP_Post);
         }
         if (endpoint == null) {
             throw new RuntimeException("No endpoint found for profile " + service.getProfile());
@@ -157,13 +155,13 @@ public class SamlMessageSender {
             boolean signMessage;
 
             if (endpoint.getService().getProfile() == SamlProfile.SINGLE_SIGN_ON) {
-                if (samlEntityBean.get().getIdpOrSp() == SamlIdpOrSp.SP) {
+                if (getSamlEntityBean().getIdpOrSp() == SamlIdpOrSp.SP) {
                     signMessage = ((SamlExternalIdentityProvider) samlProvider).isWantAuthnRequestsSigned();
                 } else {
                     signMessage = true;
                 }
             } else {
-                signMessage = samlEntityBean.get().isSingleLogoutMessagesSigned();
+                signMessage = getSamlEntityBean().isSingleLogoutMessagesSigned();
             }
 
             if (endpoint.getBinding() == SamlBinding.HTTP_Redirect) {
@@ -180,13 +178,13 @@ public class SamlMessageSender {
 
                 PrivateKey privateKey = null;
                 if (signMessage) {
-                    privateKey = samlEntityBean.get().getSigningKey().getPrivateKey();
+                    privateKey = getSamlEntityBean().getSigningKey().getPrivateKey();
                 }
                 sendSamlRedirect(base64EncodedResponse, signMessage, samlRequestOrResponse, privateKey, endpoint, response);
             } else {
                 if (signMessage) {
-                    PublicKey publicKey = samlEntityBean.get().getSigningKey().getCertificate().getPublicKey();
-                    PrivateKey privateKey = samlEntityBean.get().getSigningKey().getPrivateKey();
+                    PublicKey publicKey = getSamlEntityBean().getSigningKey().getCertificate().getPublicKey();
+                    PrivateKey privateKey = getSamlEntityBean().getSigningKey().getPrivateKey();
                     signatureUtilForPostBinding.sign(message, new KeyPair(publicKey, privateKey));
                 }
                 byte[] messageBytes = SamlUtils.getDocumentAsString(message).getBytes("UTF-8");

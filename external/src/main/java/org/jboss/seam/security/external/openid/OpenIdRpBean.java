@@ -29,9 +29,7 @@ import org.openid4java.discovery.DiscoveryInformation;
 /**
  * @author Marcel Kolsteren
  */
-//@Typed(OpenIdRpBean.class)
 @ApplicationScoped
-@SuppressWarnings("restriction")
 public class OpenIdRpBean extends EntityBean implements OpenIdRelyingPartyApi, OpenIdRelyingPartyConfigurationApi {
     @Inject
     private OpenIdRpAuthenticationService openIdSingleLoginSender;

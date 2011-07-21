@@ -24,6 +24,7 @@ import org.jboss.seam.security.external.jaxb.samlv2.protocol.ResponseType;
 import org.jboss.seam.security.external.jaxb.samlv2.protocol.StatusCodeType;
 import org.jboss.seam.security.external.jaxb.samlv2.protocol.StatusResponseType;
 import org.jboss.seam.security.external.jaxb.samlv2.protocol.StatusType;
+import org.jboss.seam.security.external.saml.SamlDialogue;
 import org.jboss.seam.security.external.saml.api.SamlIdpSession;
 import org.jboss.seam.security.external.saml.api.SamlNameId;
 import org.jboss.seam.security.external.saml.idp.SamlIdpSessionImpl;
@@ -32,11 +33,10 @@ import org.jboss.seam.security.external.saml.idp.SamlIdpSessionImpl;
  * @author Marcel Kolsteren
  */
 @ApplicationScoped
-public class SamlMessageFactory {
+public abstract class SamlMessageFactory {
     private static final int ASSERTION_VALIDITY_IN_MINUTES = 5;
 
-    @Inject
-    private Instance<SamlEntityBean> samlEntityBean;
+    protected abstract SamlEntityBean getSamlEntityBean();
 
     @Inject
     private Dialogue dialogue;
@@ -63,7 +63,7 @@ public class SamlMessageFactory {
 
         // Fill in the optional fields that indicate where and how the response
         // should be delivered.
-        authnRequest.setAssertionConsumerServiceURL(samlEntityBean.get().getServiceURL(SamlServiceType.SAML_ASSERTION_CONSUMER_SERVICE));
+        authnRequest.setAssertionConsumerServiceURL(getSamlEntityBean().getServiceURL(SamlServiceType.SAML_ASSERTION_CONSUMER_SERVICE));
         authnRequest.setProtocolBinding(SamlConstants.HTTP_POST_BINDING);
 
         return authnRequest;
@@ -137,7 +137,7 @@ public class SamlMessageFactory {
         request.setIssueInstant(SamlUtils.getXMLGregorianCalendarNow());
 
         NameIDType issuer = assertionObjectFactory.createNameIDType();
-        issuer.setValue(samlEntityBean.get().getEntityId());
+        issuer.setValue(getSamlEntityBean().getEntityId());
         request.setIssuer(issuer);
 
         request.setVersion(SamlConstants.VERSION_2_0);
@@ -148,7 +148,7 @@ public class SamlMessageFactory {
         response.setIssueInstant(SamlUtils.getXMLGregorianCalendarNow());
 
         NameIDType issuer = assertionObjectFactory.createNameIDType();
-        issuer.setValue(samlEntityBean.get().getEntityId());
+        issuer.setValue(getSamlEntityBean().getEntityId());
         response.setIssuer(issuer);
 
         response.setVersion(SamlConstants.VERSION_2_0);

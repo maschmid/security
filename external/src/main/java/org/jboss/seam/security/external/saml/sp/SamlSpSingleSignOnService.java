@@ -30,9 +30,6 @@ import org.jboss.seam.security.external.jaxb.samlv2.protocol.StatusResponseType;
 import org.jboss.seam.security.external.jaxb.samlv2.protocol.StatusType;
 import org.jboss.seam.security.external.saml.SamlConstants;
 import org.jboss.seam.security.external.saml.SamlDialogue;
-import org.jboss.seam.security.external.saml.SamlEntityBean;
-import org.jboss.seam.security.external.saml.SamlMessageFactory;
-import org.jboss.seam.security.external.saml.SamlMessageSender;
 import org.jboss.seam.security.external.saml.SamlProfile;
 import org.jboss.seam.security.external.saml.SamlRedirectMessage;
 import org.jboss.seam.security.external.saml.SamlServiceType;
@@ -42,7 +39,6 @@ import org.jboss.seam.security.external.spi.SamlServiceProviderSpi;
 /**
  * @author Marcel Kolsteren
  */
-@SuppressWarnings("restriction")
 public class SamlSpSingleSignOnService {
     @Inject
     private Logger log;
@@ -54,19 +50,19 @@ public class SamlSpSingleSignOnService {
     private Instance<SamlServiceProviderSpi> samlServiceProviderSpi;
 
     @Inject
-    private Instance<SamlEntityBean> samlEntityBean;
+    private Instance<SamlSpBean> samlSpBean;
 
     @Inject
     private DialogueBean dialogue;
 
     @Inject
-    private SamlMessageSender samlMessageSender;
+    private SamlSpMessageSender samlMessageSender;
 
     @Inject
     private SamlDialogue samlDialogue;
 
     @Inject
-    private SamlMessageFactory samlMessageFactory;
+    private SamlSpMessageFactory samlMessageFactory;
 
     @Inject
     private ResponseHandler responseHandler;
@@ -198,7 +194,7 @@ public class SamlSpSingleSignOnService {
                 if (confirmation.getMethod().equals(SamlConstants.CONFIRMATION_METHOD_BEARER)) {
                     SubjectConfirmationDataType confirmationData = confirmation.getSubjectConfirmationData();
 
-                    boolean validRecipient = confirmationData.getRecipient().equals(samlEntityBean.get().getServiceURL(SamlServiceType.SAML_ASSERTION_CONSUMER_SERVICE));
+                    boolean validRecipient = confirmationData.getRecipient().equals(samlSpBean.get().getServiceURL(SamlServiceType.SAML_ASSERTION_CONSUMER_SERVICE));
 
                     boolean notTooLate = confirmationData.getNotOnOrAfter().compare(SamlUtils.getXMLGregorianCalendarNow()) == DatatypeConstants.GREATER;
 
