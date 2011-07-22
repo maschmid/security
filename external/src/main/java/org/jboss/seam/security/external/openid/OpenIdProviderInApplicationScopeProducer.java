@@ -5,10 +5,11 @@ import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.New;
 import javax.enterprise.inject.Produces;
 
+import org.jboss.seam.solder.core.Veto;
+
 /**
  * @author Marcel Kolsteren
  */
-@Alternative
 public class OpenIdProviderInApplicationScopeProducer {
     @Produces
     @ApplicationScoped

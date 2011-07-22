@@ -50,7 +50,7 @@ class OpenIdRpAuthenticationService {
     private Instance<OpenIdRelyingPartySpi> openIdRelyingPartySpi;
 
     @Inject
-    private OpenIdRpBean relyingPartyBean;
+    private Instance<OpenIdRpBean> relyingPartyBean;
 
     @Inject
     private ResponseHandler responseHandler;
@@ -129,8 +129,8 @@ class OpenIdRpAuthenticationService {
 
             openIdRequest.setDiscoveryInformation(discovered);
 
-            String realm = relyingPartyBean.getRealm();
-            String returnTo = relyingPartyBean.getServiceURL(
+            String realm = relyingPartyBean.get().getRealm();
+            String returnTo = relyingPartyBean.get().getServiceURL(
                     OpenIdService.OPEN_ID_SERVICE) + "?dialogueId=" + dialogue.get().getId();
             AuthRequest authReq = openIdConsumerManager.authenticate(discovered, returnTo, realm);
 

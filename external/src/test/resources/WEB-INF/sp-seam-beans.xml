@@ -1,0 +1,20 @@
+<beans xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd"
+       xmlns:s="urn:java:ee"
+       xmlns:sp="urn:java:org.jboss.seam.security.external.saml.sp"
+       xmlns:virt="urn:java:org.jboss.seam.security.external.virtualapplications.api">
+       
+    <sp:SamlSpInVirtualApplicationScopeProducer>
+        <s:replaces/>
+        <sp:produceSp>
+            <s:Produces/>
+            <virt:VirtualApplicationScoped/>
+            <s:parameters>
+                <sp:SamlSpBean>
+                    <s:New/>
+                </sp:SamlSpBean>
+                <virt:VirtualApplication/>
+            </s:parameters>
+        </sp:produceSp>
+    </sp:SamlSpInVirtualApplicationScopeProducer>
+</beans>
