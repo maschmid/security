@@ -6,15 +6,15 @@ import javax.enterprise.inject.Produces;
 
 import org.jboss.seam.security.external.virtualapplications.api.VirtualApplication;
 import org.jboss.seam.security.external.virtualapplications.api.VirtualApplicationScoped;
+import org.jboss.seam.solder.core.Veto;
 
 /**
  * @author Marcel Kolsteren
  */
-@Alternative
 public class SamlSpInVirtualApplicationScopeProducer {
-    @Produces
-    @VirtualApplicationScoped
-    public SamlSpBean produceSp(@New SamlSpBean sp, VirtualApplication virtualApplication) {
+    /*@Produces
+    @VirtualApplicationScoped*/
+    public SamlSpBean produceSp(/*@New*/ SamlSpBean sp, VirtualApplication virtualApplication) {
         String hostName = virtualApplication.getHostName();
         sp.setHostName(hostName);
         sp.setEntityId("https://" + hostName);

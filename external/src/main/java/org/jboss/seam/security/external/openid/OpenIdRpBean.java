@@ -3,7 +3,6 @@ package org.jboss.seam.security.external.openid;
 import java.io.Writer;
 import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
@@ -24,13 +23,13 @@ import org.jboss.seam.security.external.jaxb.xrds.XRDS;
 import org.jboss.seam.security.external.openid.api.OpenIdRelyingPartyApi;
 import org.jboss.seam.security.external.openid.api.OpenIdRelyingPartyConfigurationApi;
 import org.jboss.seam.security.external.openid.api.OpenIdRequestedAttribute;
+import org.jboss.seam.solder.core.Veto;
 import org.openid4java.discovery.DiscoveryInformation;
 
 /**
  * @author Marcel Kolsteren
  */
-//@Typed(OpenIdRpBean.class)
-@ApplicationScoped
+@Veto
 @SuppressWarnings("restriction")
 public class OpenIdRpBean extends EntityBean implements OpenIdRelyingPartyApi, OpenIdRelyingPartyConfigurationApi {
     @Inject

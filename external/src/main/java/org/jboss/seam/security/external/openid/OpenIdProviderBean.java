@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
@@ -30,12 +29,13 @@ import org.jboss.seam.security.external.jaxb.xrds.XRDS;
 import org.jboss.seam.security.external.openid.api.OpenIdProviderApi;
 import org.jboss.seam.security.external.openid.api.OpenIdProviderConfigurationApi;
 import org.jboss.seam.security.external.spi.OpenIdProviderSpi;
+import org.jboss.seam.solder.core.Veto;
 import org.openid4java.discovery.DiscoveryInformation;
 
 /**
  * @author Marcel Kolsteren
  */
-@Typed(OpenIdProviderBean.class)
+@Veto
 @SuppressWarnings("restriction")
 public class OpenIdProviderBean extends EntityBean implements OpenIdProviderApi, OpenIdProviderConfigurationApi {
     @Inject

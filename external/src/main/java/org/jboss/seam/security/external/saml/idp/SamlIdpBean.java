@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
@@ -35,11 +34,12 @@ import org.jboss.seam.security.external.saml.api.SamlIdentityProviderConfigurati
 import org.jboss.seam.security.external.saml.api.SamlIdpSession;
 import org.jboss.seam.security.external.saml.api.SamlNameId;
 import org.jboss.seam.security.external.saml.api.SamlPrincipal;
+import org.jboss.seam.solder.core.Veto;
 
 /**
  * @author Marcel Kolsteren
  */
-@Typed(SamlIdpBean.class)
+@Veto
 @SuppressWarnings("restriction")
 public class SamlIdpBean extends SamlEntityBean implements SamlMultiUserIdentityProviderApi, SamlIdentityProviderConfigurationApi {
     @Inject
