@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jboss.logging.Logger;
 import org.jboss.seam.security.external.InvalidRequestException;
 import org.jboss.seam.security.external.OpenIdRequestedAttributeImpl;
 import org.jboss.seam.security.external.ResponseHandler;
@@ -33,6 +34,10 @@ import org.openid4java.server.ServerManager;
  * @author Marcel Kolsteren
  */
 public class OpenIdProviderAuthenticationService {
+    
+    @Inject
+    Logger logger;
+    
     @Inject
     private Instance<OpenIdProviderRequest> openIdProviderRequest;
 
@@ -55,16 +60,21 @@ public class OpenIdProviderAuthenticationService {
     private Instance<OpenIdProviderBean> opBean;
 
     public void handleIncomingMessage(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws InvalidRequestException {
+        
+        logger.info("handleIncomingMessage begin");
+        
         ParameterList parameterList = new ParameterList(httpRequest.getParameterMap());
 
         String mode = parameterList.getParameterValue("openid.mode");
 
         Message associationResponse;
 
+        logger.info("handleIncomingMessage mode = " + mode);
+
         if ("associate".equals(mode)) {
             associationResponse = openIdServerManager.get().associationResponse(parameterList);
             writeMessageToResponse(associationResponse, httpResponse);
-        } else if ("checkid_setup".equals(mode) || "checkid_immediate".equals(mode)) {
+        } else if ("checkid_setup".equals(mode) || "checkid_immediate".equals(mode)) {            
             dialogueManager.beginDialogue();
             String claimedIdentifier = parameterList.getParameterValue("openid.claimed_id");
             String opLocalIdentifier = parameterList.getParameterValue("openid.identity");
@@ -117,6 +127,8 @@ public class OpenIdProviderAuthenticationService {
             associationResponse = DirectError.createDirectError("Unknown request");
             writeMessageToResponse(associationResponse, httpResponse);
         }
+        
+        logger.info("handleIncomingMessage end");
     }
 
     private void handleAttributeRequests(FetchRequest fetchRequest, List<OpenIdRequestedAttribute> requestedAttributes, boolean required) {
@@ -134,6 +146,8 @@ public class OpenIdProviderAuthenticationService {
     }
 
     public void sendAuthenticationResponse(boolean authenticationSuccesful, Map<String, List<String>> attributeValues, HttpServletResponse response) {
+        logger.info("sendAuthenticationResponse begin");
+        
         ParameterList parameterList = openIdProviderRequest.get().getParameterList();
         String userName = openIdProviderRequest.get().getUserName();
         String opLocalIdentifier = opBean.get().getOpLocalIdentifierForUserName(userName);
@@ -173,6 +187,7 @@ public class OpenIdProviderAuthenticationService {
         }
 
         dialogue.get().setFinished(true);
+        logger.info("sendAuthenticationResponse end");
     }
 
     private void writeMessageToResponse(Message message, HttpServletResponse response) {

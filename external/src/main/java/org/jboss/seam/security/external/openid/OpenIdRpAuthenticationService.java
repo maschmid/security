@@ -70,6 +70,9 @@ class OpenIdRpAuthenticationService {
 
     public void processIncomingMessage(ParameterList parameterList, String queryString, HttpServletResponse httpResponse) {
         try {
+            
+            log.info("processIncomingMessage begin");
+            
             // retrieve the previously stored discovery information
             DiscoveryInformation discovered = openIdRequest.getDiscoveryInformation();
             if (discovered == null) {
@@ -112,16 +115,22 @@ class OpenIdRpAuthenticationService {
             }
         } catch (OpenIDException e) {
             responseHandler.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage(), httpResponse);
+            log.info("processIncomingMessage error");
             return;
         }
 
         dialogue.get().setFinished(true);
+        
+        log.info("processIncomingMessage end");
     }
     
     @Dialogued(join = true)
     public void sendAuthRequest(String openId, List<OpenIdRequestedAttribute> attributes,
                                 HttpServletResponse response) {
         try {
+            
+            log.info("sendAuthRequest begin");
+            
             @SuppressWarnings("unchecked")
             List<DiscoveryInformation> discoveries = openIdConsumerManager.discover(openId);
 
@@ -146,10 +155,15 @@ class OpenIdRpAuthenticationService {
             String url = authReq.getDestinationUrl(true);
 
             responseHandler.sendHttpRedirectToUserAgent(url, response);
+            
+            log.info("sendAuthRequest end");
+            
         } catch (OpenIDException e) {
             log.warn("Authentication failed", e);
             openIdRelyingPartySpi.get().loginFailed(e.getMessage(),
                     responseHandler.createResponseHolder(response));
+            
+            log.info("sendAuthRequest error");
         }
     }
 
