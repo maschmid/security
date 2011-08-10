@@ -34,6 +34,6 @@ class CustomOpenIdProvider implements OpenIdProvider {
     }
     
     public void requestAttributes(OpenIdRelyingPartyApi openIdApi, List<OpenIdRequestedAttribute> attributes) {
-        
+        attributes.add (openIdApi.createOpenIdRequestedAttribute("email", "http://schema.openid.net/contact/email", true, 1));
     }
 }

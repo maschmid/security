@@ -77,7 +77,7 @@ class OpenIdRpAuthenticationService {
             }
 
             // extract the receiving URL from the HTTP request            
-            StringBuffer receivingURL = new StringBuffer(relyingPartyBean.getServiceURL(OpenIdService.OPEN_ID_SERVICE));
+            StringBuffer receivingURL = new StringBuffer(relyingPartyBean.get().getServiceURL(OpenIdService.OPEN_ID_SERVICE));
             
             if (queryString != null && queryString.length() > 0)
                 receivingURL.append("?").append(queryString);

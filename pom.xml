@@ -91,7 +91,7 @@
             <module>examples/simple</module>
             <module>examples/idmconsole</module>
             <module>examples/openid-rp</module>
-            <!--module>examples/openid-op</module-->
+            <module>examples/openid-op</module>
             <!--module>examples/saml-idp</module>
             <module>examples/saml-sp</module-->            
          </modules>

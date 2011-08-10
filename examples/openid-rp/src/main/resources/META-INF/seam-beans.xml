@@ -6,13 +6,14 @@
        xmlns:openid="urn:java:org.jboss.seam.security.external.openid"
        xsi:schemaLocation="
       http://java.sun.com/xml/ns/javaee http://jboss.org/schema/cdi/beans_1_0.xsd">
-
+<!--
     <openid:OpenIdRpBean>
         <s:modifies/>
         <openid:hostName>www.openid-rp.com</openid:hostName>
         <openid:port>8080</openid:port>
         <openid:protocol>http</openid:protocol>
     </openid:OpenIdRpBean>
+    -->
 
     <security:IdentityImpl>
         <s:modifies/>
