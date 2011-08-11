@@ -19,7 +19,9 @@ import org.jboss.seam.security.external.dialogues.DialogueBean;
 import org.jboss.seam.security.external.dialogues.api.DialogueManager;
 import org.jboss.seam.security.external.openid.api.OpenIdRequestedAttribute;
 import org.jboss.seam.security.external.spi.OpenIdProviderSpi;
+import org.openid4java.association.AssociationException;
 import org.openid4java.message.AuthRequest;
+import org.openid4java.message.AuthSuccess;
 import org.openid4java.message.DirectError;
 import org.openid4java.message.Message;
 import org.openid4java.message.MessageException;
@@ -28,6 +30,7 @@ import org.openid4java.message.ParameterList;
 import org.openid4java.message.ax.AxMessage;
 import org.openid4java.message.ax.FetchRequest;
 import org.openid4java.message.ax.FetchResponse;
+import org.openid4java.server.ServerException;
 import org.openid4java.server.ServerManager;
 
 /**
@@ -156,18 +159,32 @@ public class OpenIdProviderAuthenticationService {
             claimedIdentifier = opLocalIdentifier;
         }
 
-        Message authResponse = openIdServerManager.get().authResponse(parameterList, opLocalIdentifier, claimedIdentifier, authenticationSuccesful);
-
+        logger.info("sendAuthenticationResponse pre authResponse");
+        Message authResponse = openIdServerManager.get().authResponse(parameterList, opLocalIdentifier, claimedIdentifier, authenticationSuccesful, false);
+        logger.info("sendAuthenticationResponse post authResponse");
+        
         if (response instanceof DirectError) {
             writeMessageToResponse(authResponse, response);
         } else {
             if (openIdProviderRequest.get().getRequestedAttributes() != null) {
                 try {
+                    logger.info("sendAuthenticationResponse pre createFetchResponse");
                     FetchResponse fetchResponse = FetchResponse.createFetchResponse(openIdProviderRequest.get().getFetchRequest(), attributeValues);
+                    logger.info("sendAuthenticationResponse post createFetchResponse");
                     authResponse.addExtension(fetchResponse);
+                    logger.info("sendAuthenticationResponse post addExtension");
+                    
                 } catch (MessageException e) {
                     throw new RuntimeException(e);
                 }
+            }
+            
+            try {
+                openIdServerManager.get().sign((AuthSuccess)authResponse);
+            } catch (ServerException e) {
+                throw new RuntimeException(e);
+            } catch (AssociationException e) {
+                throw new RuntimeException(e);
             }
 
             // caller will need to decide which of the following to use:
